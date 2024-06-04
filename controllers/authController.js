@@ -1,7 +1,9 @@
+const axios = require('axios');
 const { getUserByEmail, getUserByUsername, addUser, generateToken, sendConfirmationEmail, sendPasswordResetEmail } = require('../services/userService');
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
-const { sendToken } = require('../services/worldService');
+
+const worldServerUrl = 'http://localhost:4000';
 
 const register = async (req, res) => {
     const { username, email, password } = req.body;
@@ -40,7 +42,7 @@ const confirmEmail = (req, res) => {
     }
 };
 
-const login = (req, res) => {
+const login = async (req, res) => {
     const { username, password } = req.body;
     const user = getUserByUsername(username);
 
@@ -53,8 +55,12 @@ const login = (req, res) => {
     }
 
     const token = generateToken(user);
-    sendToken(token);
-    sendUserId(user.id); // Send the unique ID to the world server
+
+    try {
+        await axios.post(`${worldServerUrl}/login`, { token });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error contacting World Server', error: error.message });
+    }
 
     res.status(200).json({ token, id: user.id });
 };
