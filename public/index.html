@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML5 Game</title>
+    <script src="game.js"></script>
+</head>
+<body>
+    <div id="loginForm">
+        <h2>Login</h2>
+        <form id="login">
+            <input type="text" id="username" placeholder="Username" required><br>
+            <input type="password" id="password" placeholder="Password" required><br>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <div id="characterSelect" style="display:none;">
+        <h2>Select Character</h2>
+        <div id="characterList"></div>
+    </div>
+    <canvas id="gameCanvas" style="display:none;"></canvas>
+</body>
+</html>
