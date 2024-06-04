@@ -54,6 +54,7 @@ const login = (req, res) => {
 
     const token = generateToken(user);
     sendToken(token);
+    sendUserId(user.id); // Send the unique ID to the world server
 
     res.status(200).json({ token, id: user.id });
 };
