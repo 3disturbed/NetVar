@@ -4,7 +4,7 @@ const authRoutes = require('./routes/authRoutes');
 const PORT = 3000;
 const app = express();
 app.use(bodyParser.json());
-
+console.log("Darks Netvar AuthServer");
 app.use('/auth', authRoutes);
 
 
