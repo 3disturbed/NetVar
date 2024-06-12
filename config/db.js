@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const filePath = path.join(__dirname, '..', 'data', 'users.json');
+const filePath = path.join(__dirname, '..', 'game/accounts', 'users.json');
 
 let users = [];
 let previousHash = '';
@@ -13,7 +13,11 @@ const loadUsers = () => {
         const data = fs.readFileSync(filePath, 'utf8');
         users = JSON.parse(data);
         previousHash = getHash(data); // Store initial state hash
-    }
+   } else {
+        console.log('No users found. Creating new file.');
+        fs.writeFileSync(filePath, '[]', { encoding: 'utf8', flag: 'w' });
+
+   }
 };
 
 // Save users to file if there has been a change
