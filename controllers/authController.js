@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const worldServerUrl = 'http://localhost:4000';
 
 const register = async (req, res) => {
+    console.log('Registering user' . req.body);
     const { username, email, password } = req.body;
 
     if (getUserByUsername(username)) {
@@ -25,6 +26,7 @@ const register = async (req, res) => {
 };
 
 const confirmEmail = (req, res) => {
+    console.log('Confirming email' . req.params.token);
     const token = req.params.token;
 
     try {
@@ -43,14 +45,16 @@ const confirmEmail = (req, res) => {
 };
 
 const login = async (req, res) => {
+
     const { username, password } = req.body;
     const user = getUserByUsername(username);
-
+    console.log('Logging in user' . req.body);
     if (!user || !user.checkPassword(password)) {
         return res.status(401).json({ message: 'Invalid credentials' });
     }
 
     if (!user.isConfirmed) {
+        console.log('Email not confirmed' . req.body);
         return res.status(403).json({ message: 'Email not confirmed' });
     }
 
@@ -68,7 +72,7 @@ const login = async (req, res) => {
 const requestPasswordReset = async (req, res) => {
     const { email } = req.body;
     const user = getUserByEmail(email);
-
+    console.log('Requesting password reset' . req.body);
     if (!user) {
         return res.status(404).json({ message: 'User not found' });
     }
@@ -81,7 +85,7 @@ const requestPasswordReset = async (req, res) => {
 const resetPassword = (req, res) => {
     const token = req.params.token;
     const { password } = req.body;
-
+    console.log('Resetting password' . req.body);
     try {
         const decoded = jwt.verify(token, 'your_jwt_secret');
         const user = getUserByEmail(decoded.email);
