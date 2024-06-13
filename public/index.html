@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>HTML5 Game</title>
-    
+    <title>NetVar Test</title>
 </head>
 <body>
     <div id="loginForm">
@@ -12,7 +11,20 @@
             <input type="password" id="password" placeholder="Password" required><br>
             <button type="submit">Login</button>
         </form>
+        <p>Don't have an account? <a href="#" id="showRegister">Register here</a></p>
     </div>
+
+    <div id="registerForm" style="display:none;">
+        <h2>Register</h2>
+        <form id="register">
+            <input type="text" id="regUsername" placeholder="Username" required><br>
+            <input type="email" id="regEmail" placeholder="Email" required><br>
+            <input type="password" id="regPassword" placeholder="Password" required><br>
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="#" id="showLogin">Login here</a></p>
+    </div>
+
     <div id="characterSelect" style="display:none;">
         <h2>Select Character</h2>
         <div id="characterList"></div>

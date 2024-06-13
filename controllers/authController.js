@@ -2,23 +2,24 @@ const axios = require('axios');
 const { getUserByEmail, getUserByUsername, addUser, generateToken, sendConfirmationEmail, sendPasswordResetEmail } = require('../services/userService');
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 const worldServerUrl = 'http://localhost:4000';
 
 const register = async (req, res) => {
-    console.log('Registering user' . req.body);
+    console.log('Registering user', req.body);
     const { username, email, password } = req.body;
 
-    if (getUserByUsername(username)) {
+    if (await getUserByUsername(username)) {
         return res.status(400).json({ message: 'Username already exists' });
     }
 
-    if (getUserByEmail(email)) {
+    if (await getUserByEmail(email)) {
         return res.status(400).json({ message: 'Email already exists' });
     }
 
     const newUser = new User(username, email, password);
-    addUser(newUser);
+    await addUser(newUser);
 
     await sendConfirmationEmail(newUser);
 
@@ -26,11 +27,11 @@ const register = async (req, res) => {
 };
 
 const confirmEmail = (req, res) => {
-    console.log('Confirming email' . req.params.token);
+    console.log('Confirming email', req.params.token);
     const token = req.params.token;
 
     try {
-        const decoded = jwt.verify(token, 'your_jwt_secret');
+        const decoded = jwt.verify(token, 'NetVarSecret');
         const user = getUserByEmail(decoded.email);
 
         if (!user) {
@@ -43,6 +44,7 @@ const confirmEmail = (req, res) => {
         res.status(400).json({ message: 'Invalid token' });
     }
 };
+
 const login = async (req, res) => {
     console.log('Logging in user', req.body);
     const { username, password } = req.body;
@@ -69,11 +71,11 @@ const login = async (req, res) => {
     res.status(200).json({ token, id: user.id });
 };
 
-
 const requestPasswordReset = async (req, res) => {
+    console.log('Requesting password reset', req.body);
     const { email } = req.body;
-    const user = getUserByEmail(email);
-    console.log('Requesting password reset' . req.body);
+    const user = await getUserByEmail(email);
+
     if (!user) {
         return res.status(404).json({ message: 'User not found' });
     }
@@ -83,13 +85,14 @@ const requestPasswordReset = async (req, res) => {
     res.status(200).json({ message: 'Password reset email sent' });
 };
 
-const resetPassword = (req, res) => {
+const resetPassword = async (req, res) => {
+    console.log('Resetting password', req.body);
     const token = req.params.token;
     const { password } = req.body;
-    console.log('Resetting password' . req.body);
+
     try {
         const decoded = jwt.verify(token, 'your_jwt_secret');
-        const user = getUserByEmail(decoded.email);
+        const user = await getUserByEmail(decoded.email);
 
         if (!user) {
             return res.status(400).json({ message: 'Invalid token' });

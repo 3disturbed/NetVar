@@ -3,7 +3,7 @@ const { getUsers, setUsers } = require('../config/db');
 const { sendEmail } = require('../config/email');
 const jwt = require('jsonwebtoken');
 
-const secret = 'your_jwt_secret';
+const secret = 'NetVarSecret';
 
 const getUserByEmail = (email) => {
     const users = getUsers();
@@ -32,7 +32,7 @@ const generateToken = (user) => {
 
 const sendConfirmationEmail = (user) => {
     const token = generateToken(user);
-    const confirmationUrl = `http://localhost:3000/confirm/${token}`;
+    const confirmationUrl = `http://localhost:5000/confirm/${token}`;
     return sendEmail(user.email, 'Confirm your email', `Click here to confirm your email: ${confirmationUrl}`);
 };
 
