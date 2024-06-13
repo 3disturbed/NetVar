@@ -1,7 +1,13 @@
 const express = require('express');
 const path = require('path');
+// add body parser
+const bodyParser = require('body-parser');
 
 const app = express();
+const http = require('http');
+// Use body-parser middleware
+app.use(bodyParser.json()); // to parse application/json
+app.use(bodyParser.urlencoded({ extended: true })); // to parse application/x-www-form-urlencoded
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -14,17 +20,18 @@ app.get('/', (req, res) => {
 
 // Handle /auth route by sending rest requests to AuthServer
 app.use('/auth/', (req, res) => {
-    console.log('Proxying request to AuthServer');
-    const http = require('http');
-    console.log('Proxying request to AuthServer');
-    const { method, url, headers } = req;
+    console.log('Proxying request to AuthServer @', req.url);
+    console.log('Request body:', req.body);
+
+    const { method, url, headers, body } = req;
+
     const options = {
-        hostname: 'localhost',
+        hostname: '127.0.0.1',
         port: 3000,
+        path: url,
         method,
         headers,
     };
-    console.log(options);
 
     // Create a new request to AuthServer
     const proxy = http.request(options, (proxyRes) => {
@@ -32,10 +39,23 @@ app.use('/auth/', (req, res) => {
         proxyRes.pipe(res);
     });
 
-    req.pipe(proxy);
-    console.log('Request proxied');
+    // Handle errors on the proxy request
+    proxy.on('error', (err) => {
+        console.error('Error proxying request:', err);
+        res.status(500).send('Proxy Error');
+    });
 
+    // Write the body to the proxy request
+    if (body) {
+        proxy.write(JSON.stringify(body));
+    }
+
+    req.pipe(proxy);
+
+    console.log('Request proxied');
 });
+
+
 
 const PORT = 5000;
 app.listen(PORT, () => {

@@ -8,6 +8,7 @@ class User {
         this.email = email;
         this.password = bcrypt.hashSync(password, 10);
         this.isConfirmed = isConfirmed;
+        this.AuthLevel = 0;
     }
 
     checkPassword(password) {

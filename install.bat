@@ -1,2 +1,2 @@
 @echo off
-npm install bcryptjs smtp-server jsonwebtoken
+npm install bcryptjs smtp-server jsonwebtoken body-parser

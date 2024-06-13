@@ -4,14 +4,16 @@ document.getElementById('login').addEventListener('submit', async (e) => {
     e.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-
+    alert('Logging in as ' + username);
+    
     // Authenticate user
     const response = await fetch(`./auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     });
-
+    
+    console.log(response);
     const data = await response.json();
     if (response.ok) {
         const token = data.token;

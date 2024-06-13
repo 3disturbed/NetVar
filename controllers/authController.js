@@ -45,12 +45,13 @@ const confirmEmail = (req, res) => {
 };
 
 const login = async (req, res) => {
-
+    console.log('Logging in user');
     const { username, password } = req.body;
     const user = getUserByUsername(username);
-    console.log('Logging in user' . req.body);
+ 
     if (!user || !user.checkPassword(password)) {
-        return res.status(401).json({ message: 'Invalid credentials' });
+        console.log('Invalid credentials' . req);
+        return res.status(401).json({ message: 'Invalid credentials!!' });
     }
 
     if (!user.isConfirmed) {
