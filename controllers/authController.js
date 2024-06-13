@@ -43,19 +43,18 @@ const confirmEmail = (req, res) => {
         res.status(400).json({ message: 'Invalid token' });
     }
 };
-
 const login = async (req, res) => {
-    console.log('Logging in user');
+    console.log('Logging in user', req.body);
     const { username, password } = req.body;
-    const user = getUserByUsername(username);
- 
+    const user = await getUserByUsername(username);
+
     if (!user || !user.checkPassword(password)) {
-        console.log('Invalid credentials' . req);
-        return res.status(401).json({ message: 'Invalid credentials!!' });
+        console.log('Invalid credentials', req.body);
+        return res.status(401).json({ message: 'Invalid credentials!' });
     }
 
     if (!user.isConfirmed) {
-        console.log('Email not confirmed' . req.body);
+        console.log('Email not confirmed', req.body);
         return res.status(403).json({ message: 'Email not confirmed' });
     }
 
@@ -69,6 +68,7 @@ const login = async (req, res) => {
 
     res.status(200).json({ token, id: user.id });
 };
+
 
 const requestPasswordReset = async (req, res) => {
     const { email } = req.body;
