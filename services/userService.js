@@ -8,8 +8,10 @@ const secret = 'NetVarSecret';
 const getUserByEmail = (email) => {
     const users = getUsers();
 
-    var userData = user.getUserByEmail(email);
- 
+    var userData = users.find(user => user.email === email);
+    if (!userData) {
+        return null;
+    }
     var user = new User(userData.username, userData.email, userData.password, userData.isConfirmed);
   
     user.id = userData.id;
@@ -25,17 +27,15 @@ const getUserByUsername = (username) => {
     const users = getUsers();
     
     var userData = users.find(user => user.username === username); 
-    if (userData)
+    if (!userData)
         {
+            return null;
+        }
             var user = new User(userData.username, userData.email, userData.password, userData.isConfirmed);
             user.id = userData.id;
             user.AuthLevel = userData.AuthLevel;
             return user;
-        }
-    else
-        {
-            return null;
-        }
+
 
 };
 
