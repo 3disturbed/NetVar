@@ -36,7 +36,7 @@ const addCharacter = (character) => {
 loadCharacters();
 
 module.exports = {
-    getCharactersByAccountId,
+    getCharactersByToken,
     addCharacter,
     saveCharacters
 };
