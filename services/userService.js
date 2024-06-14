@@ -13,7 +13,7 @@ const getUserByEmail = (email) => {
         return null;
     }
     var user = new User(userData.username, userData.email, userData.password, userData.isConfirmed);
-  
+    user.password = userData.password;
     user.id = userData.id;
     user.username = userData.username;
     user.email = userData.email;
@@ -32,6 +32,7 @@ const getUserByUsername = (username) => {
             return null;
         }
             var user = new User(userData.username, userData.email, userData.password, userData.isConfirmed);
+            user.password = userData.password;
             user.id = userData.id;
             user.AuthLevel = userData.AuthLevel;
             return user;
