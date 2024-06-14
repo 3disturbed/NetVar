@@ -7,6 +7,9 @@ app.use(bodyParser.json());
 let replicationServers = [];
 let onlineUsers = [];
 
+app.post('/login', (req, res) => {
+    console.log("Logging in user", req.body);
+});
 app.post('/findReplicationServer', (req, res) => {
     const { token, characterId } = req.body;
 
