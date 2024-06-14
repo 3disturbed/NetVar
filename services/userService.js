@@ -25,10 +25,17 @@ const getUserByUsername = (username) => {
     const users = getUsers();
     
     var userData = users.find(user => user.username === username); 
-    var user = new User(userData.username, userData.email, userData.password, userData.isConfirmed);
-    user.id = userData.id;
-    user.AuthLevel = userData.AuthLevel;
-    return user;
+    if (userData)
+        {
+            var user = new User(userData.username, userData.email, userData.password, userData.isConfirmed);
+            user.id = userData.id;
+            user.AuthLevel = userData.AuthLevel;
+            return user;
+        }
+    else
+        {
+            return null;
+        }
 
 };
 
