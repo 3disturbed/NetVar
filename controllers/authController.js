@@ -4,7 +4,9 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
+const secret = 'NetVarSecret';
 const worldServerUrl = 'http://localhost:4000';
+const characterServerUrl = 'http://localhost:6000';
 
 const register = async (req, res) => {
     console.log('Registering user', req.body);
@@ -31,8 +33,9 @@ const confirmEmail = (req, res) => {
     const token = req.params.token;
 
     try {
-        const decoded = jwt.verify(token, 'NetVarSecret');
+        const decoded = jwt.verify(token, secret);
         const user = getUserByEmail(decoded.email);
+
 
         if (!user) {
             return res.status(400).json({ message: 'Invalid token' });
@@ -63,7 +66,13 @@ const login = async (req, res) => {
     const token = generateToken(user);
 
     try {
-        await axios.post(`${worldServerUrl}/login`, { token });
+        // Notify Character Server of login
+        await fetch(`${characterServerUrl}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token })
+        });
+
     } catch (error) {
         return res.status(500).json({ message: 'Error contacting World Server', error: error.message });
     }
@@ -91,7 +100,7 @@ const resetPassword = async (req, res) => {
     const { password } = req.body;
 
     try {
-        const decoded = jwt.verify(token, 'your_jwt_secret');
+        const decoded = jwt.verify(token, secret);
         const user = await getUserByEmail(decoded.email);
 
         if (!user) {
