@@ -6,9 +6,24 @@ app.use(bodyParser.json());
 
 let replicationServers = [];
 let onlineUsers = [];
+function DrawUI() {
+    console.clear();
+    
+    console.log('----------------------------------------------');
+    console.log('NetVar World Server. Online users:', onlineUsers.length);
+    console.log('Replication servers:', replicationServers.length);
+    console.log('----------------------------------------------');
+}
 
 app.post('/login', (req, res) => {
-    console.log("Logging in user", req.body);
+    
+    console.log('Logging in user', req.body);
+    // Check if user is already logged in
+    
+    onlineUsers.push(req.body);
+    res.status(200).json({ message: 'User logged in' });
+    DrawUI();
+
 });
 app.post('/findReplicationServer', (req, res) => {
     const { token, characterId } = req.body;
