@@ -74,8 +74,3 @@ const PORT = 6000;
 app.listen(PORT);
 console.log(`Character server is running on port ${PORT}`);
 
-
-
-
-
-console.log('Character server is running on port 8080');
