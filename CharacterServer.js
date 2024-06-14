@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const { getUserById } = require('./services/userService');
 const { getCharactersByAccountId } = require('./services/characterService');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
