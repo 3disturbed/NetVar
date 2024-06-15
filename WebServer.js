@@ -7,21 +7,36 @@ const http = require('http');
 // Use body-parser middleware
 app.use(bodyParser.json()); // to parse application/json
 app.use(bodyParser.urlencoded({ extended: true })); // to parse application/x-www-form-urlencoded
-
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
+var RequestCount = 0;
+var ServerStartTime = Date.now();
+var PagesServed = 0;
+
+function DrawUI() {
+    console.clear();
+    console.log('----------------------------------------------');
+    console.log('NetVar Web Server');
+    console.log('----------------------------------------------');
+    console.log('Server start time:', new Date(ServerStartTime).toLocaleTimeString());
+    console.log('Requests:', RequestCount);
+    console.log('Pages served:', PagesServed);
+    console.log('----------------------------------------------');
+}
 
 // Serve HTML5 game and forms
 app.get('/', (req, res) => {
     console.log('Serving index.html');
+    PagesServed++;
+    DrawUI();
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Handle /auth route by sending rest requests to AuthServer
 app.use('/auth/', (req, res) => {
     console.log('Proxying request to AuthServer @', req.url);
-    console.log('Request body:', req.body);
-
+    RequestCount++;
+    DrawUI();
     const { method, url, headers, body } = req;
 
     const options = {
@@ -60,3 +75,4 @@ const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`NetVar Web server is running on port ${PORT}`);
 });
+DrawUI();

@@ -1,3 +1,6 @@
+const fs = require('fs');
+
+
 let characters = [];
 
 const addCharacter = (character) => {
