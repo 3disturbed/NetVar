@@ -15,18 +15,13 @@ var PagesServed = 0;
 
 function DrawUI() {
     console.clear();
-    console.log('----------------------------------------------');
-    console.log('NetVar Web Server');
-    console.log('----------------------------------------------');
-    console.log('Server start time:', new Date(ServerStartTime).toLocaleTimeString());
-    console.log('Requests:', RequestCount);
-    console.log('Pages served:', PagesServed);
-    console.log('----------------------------------------------');
+    
+    console.log('NetVar Web Server start time:', new Date(ServerStartTime).toLocaleTimeString(),' Requests:', RequestCount,' Pages served:', PagesServed);
+
 }
 
 // Serve HTML5 game and forms
 app.get('/', (req, res) => {
-    console.log('Serving index.html');
     PagesServed++;
     DrawUI();
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -55,7 +50,6 @@ app.use('/auth/', (req, res) => {
 
     // Handle errors on the proxy request
     proxy.on('error', (err) => {
-        console.error('Error proxying request:', err);
         res.status(500).send('Proxy Error');
     });
 
@@ -65,14 +59,12 @@ app.use('/auth/', (req, res) => {
     }
 
     req.pipe(proxy);
-
-    console.log('Request proxied');
+    DrawUI();
 });
 
 
 
 const PORT = 5000;
 app.listen(PORT, () => {
-    console.log(`NetVar Web server is running on port ${PORT}`);
 });
 DrawUI();
