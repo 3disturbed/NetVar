@@ -29,7 +29,6 @@ app.get('/', (req, res) => {
 
 // Handle /auth route by sending rest requests to AuthServer
 app.use('/auth/', (req, res) => {
-    console.log('Proxying request to AuthServer @', req.url);
     RequestCount++;
     DrawUI();
     const { method, url, headers, body } = req;

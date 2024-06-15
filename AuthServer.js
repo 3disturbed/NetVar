@@ -8,7 +8,7 @@ const app = express();
 var RequestCount = 0;
 var ServerStartTime = Date.now();
 function DrawUI() {
-
+    console.clear();
     console.log('NetVar Auth Server start time:', new Date(ServerStartTime).toLocaleTimeString(), ' Requests:', RequestCount); 
 
 }
