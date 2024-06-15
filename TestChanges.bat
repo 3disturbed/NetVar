@@ -6,6 +6,5 @@ git add .
 git commit -m "Dark's Dev push."
 git push
 
-cd Netvar
 start Restart.bat
 pause
