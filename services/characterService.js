@@ -1,42 +1,37 @@
-const { getUsers } = require('../config/db');
-const bcrypt = require('bcryptjs');
-const Character = require('../models/characterModel');
-const { v4: uuidv4 } = require('uuid');
-const fs = require('fs');
 let characters = [];
-var previousLength = 0;
-const filePath = './game/characters/characters.json';
-
-
-const loadCharacters = () => {
-    // Load characters from a persistent storage if required
-    if (fs.existsSync(filePath)) {
-        const data = fs.readFileSync(filePath, 'utf8');
-        characters = JSON.parse(data);
-    } else {
-        console.log('No characters found. Creating new file.');
-        fs.writeFileSync(filePath, '[]', { encoding: 'utf8', flag: 'w' });
-    }
-};
-
-const saveCharacters = () => {
-    const currentData = JSON.stringify(characters);
-    fs.writeFileSync(filePath, currentData, { encoding: 'utf8', flag: 'w' });
-};
-
-const getCharactersByToken = (accountId) => {
-    return characters.filter(character => character.accountId === accountId);
-    
-};
 
 const addCharacter = (character) => {
     characters.push(character);
 };
 
-loadCharacters();
+const getCharactersByAccountId = (accountId) => {
+    return characters.filter(character => character.accountId === accountId);
+};
+
+const deleteCharacterById = (id) => {
+    characters = characters.filter(character => character.id !== id);
+};
+
+const updateCharacterName = (id, name) => {
+    const character = characters.find(character => character.id === id);
+    if (character) {
+        character.name = name;
+    }
+    return character;
+};
+
+const saveCharactersToFile = () => {
+    console.log('Saving characters');
+    const userFile = fs.createWriteStream('characters.json');
+    userFile.write(JSON.stringify(characters));
+    userFile.end();
+    console.log('Characters saved');
+};
 
 module.exports = {
-    getCharactersByToken,
     addCharacter,
-    saveCharacters
+    getCharactersByAccountId,
+    deleteCharacterById,
+    updateCharacterName,
+    saveCharactersToFile,
 };
