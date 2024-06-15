@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const characterRoutes = require('./routes/characterRoutes');
 const { saveCharactersToFile } = require('./services/characterService');
-
+var characters = [];
 const app = express();
 app.use(bodyParser.json());
 

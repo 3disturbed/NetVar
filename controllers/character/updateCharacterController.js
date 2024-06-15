@@ -1,4 +1,4 @@
-const { updateCharacterName } = require('../services/characterService');
+const { updateCharacterName } = require('../../services/characterService');
 
 const updateCharacter = (req, res) => {
     console.log('Updating character');

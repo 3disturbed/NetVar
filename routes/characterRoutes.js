@@ -1,6 +1,6 @@
 const express = require('express');
 const createCharacter = require('../controllers/character/createCharacterController');
-const getCharacters = require('../controllers/character/getCharactersController');
+const getCharacters = require  ('../controllers/character/getCharacterController');
 const deleteCharacter = require('../controllers/character/deleteCharacterController');
 const updateCharacter = require('../controllers/character/updateCharacterController');
 

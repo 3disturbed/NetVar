@@ -1,4 +1,4 @@
-const { getCharactersByAccountId } = require('../services/characterService');
+const { getCharactersByAccountId } = require('../../services/characterService');
 
 const getCharacters = (req, res) => {
     console.log('Getting characters');

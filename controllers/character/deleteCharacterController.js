@@ -1,4 +1,4 @@
-const { deleteCharacterById } = require('../services/characterService');
+const { deleteCharacterById } = require('../../services/characterService');
 
 const deleteCharacter = (req, res) => {
     console.log('Deleting character');
