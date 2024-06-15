@@ -18,9 +18,11 @@ function spawnApp(appName) {
     const app = {
         child: child,
         rl: rl,
-        lastLine: ''
+        lastLine: '',
+        Name: appName
     };
-
+    // trim the .js from the app name
+    app.Name = app.Name.replace('.js', '');
     // Push the app object to the array
     apps.push(app);
 
@@ -41,9 +43,21 @@ function spawnApp(appName) {
 // Function to draw the UI
 function drawUI() {
     console.clear();
+    console.log('NetVar Server Monitor');
+
+console.log('---------------------');
     apps.forEach(app => {
-        console.log(`[${app.child.spawnfile}] ${app.lastLine}`);
+        
+        console.log(`[${app.Name}]:: ${app.lastLine}`);
+ 
+        console.log();
+
     });
+    console.log('Last updated:', new Date().toLocaleTimeString());
+    console.log('---------------------');
+    console.log('Press Ctrl+C to exit');
+    console.log('---------------------');
+    
 }
 
 // Spawn each app

@@ -1,2 +1,3 @@
-start node Server.js
-exit
+
+node Server.js
+Server.bat
