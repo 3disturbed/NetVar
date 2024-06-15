@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 // Load Secret from file
 // if secret file does not exist, create it
-if (!fs.existsSync('secret.txt')) {
+if (!fs.existsSync('./secret.txt')) {
     console.log('Secret file not found. Enter a secret to use for JWT:');
     // quit if no secret is provided
     process.exit();
