@@ -7,4 +7,4 @@ git commit -m "Dark's Dev push."
 git push
 
 cd Netvar
-Restart.bat
+start Restart.bat
