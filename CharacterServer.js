@@ -29,7 +29,7 @@ app.post('/create', (req, res) => {
     res.status(200).json(character);
 });
 
-app.get('/getCharacters', (req, res) => {
+app.get('/GetCharacters', (req, res) => {
     console.log('Getting characters');
     const accountId = req.query.accountId;
     const characters = getCharactersByAccountId(accountId);

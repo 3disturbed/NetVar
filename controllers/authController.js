@@ -77,11 +77,13 @@ const login = async (req, res) => {
 
     try {
         // Notify Character Server of login
-        await fetch(`${characterServerUrl}/login`, {
+        await fetch(`${characterServerUrl}/GetCharacters`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ token })
         });
+        console.log('Notified Character Server of login');
+        
 
     } catch (error) {
         return res.status(500).json({ message: 'Error contacting World Server', error: error.message });
