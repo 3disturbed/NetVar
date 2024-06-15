@@ -2,6 +2,16 @@ const jwt = require('jsonwebtoken');
 const { getCharactersByAccountId } = require('./services/characterService');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
+// Load Secret from file
+// if secret file does not exist, create it
+if (!fs.existsSync('secret.txt')) {
+    console.log('Secret file not found. Enter a secret to use for JWT:');
+    // quit if no secret is provided
+    process.exit();
+    
+}
+const secretFile = fs.readFileSync('secret.txt', 'utf8');
+const secret = secretFile.trim();
 
 // rest server for character changes
 const express = require('express');
@@ -45,8 +55,7 @@ app.post('/update', (req, res) => {
 app.post('/login', async (req, res) => {
     console.log('Logging in user');
     const { token } = req.body;
-    const decoded = jwt.verify(token, 'NetVarSecret');
-    const user = await getUserById(decoded.id);
+    const decoded = jwt.verify(token, secret);
     const characters = getCharactersByAccountId(user.id);
     res.status(200).json({ user, characters });
 });

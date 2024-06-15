@@ -3,8 +3,18 @@ const { getUserByEmail, getUserByUsername, addUser, generateToken, sendConfirmat
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
+// Load Secret from file
+// if secret file does not exist, create it
+if (!fs.existsSync('secret.txt')) {
+    console.log('Secret file not found. Enter a secret to use for JWT:');
+    // quit if no secret is provided
+    process.exit();
+    
+}
+const secretFile = fs.readFileSync('secret.txt', 'utf8');
+const secret = secretFile.trim();
 
-const secret = 'NetVarSecret';
 const worldServerUrl = 'http://localhost:4000';
 const characterServerUrl = 'http://localhost:6000';
 

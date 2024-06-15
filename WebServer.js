@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 // add body parser
 const bodyParser = require('body-parser');
-
 const app = express();
 const http = require('http');
 // Use body-parser middleware

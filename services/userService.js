@@ -3,7 +3,18 @@ const { getUsers, setUsers } = require('../config/db');
 const { sendEmail } = require('../config/email');
 const jwt = require('jsonwebtoken');
 
-const secret = 'NetVarSecret';
+const fs = require('fs');
+// Load Secret from file
+// if secret file does not exist, create it
+if (!fs.existsSync('secret.txt')) {
+    console.log('Secret file not found. Enter a secret to use for JWT:');
+    // quit if no secret is provided
+    process.exit();
+    
+}
+const secretFile = fs.readFileSync('secret.txt', 'utf8');
+const secret = secretFile.trim();
+
 
 const getUserByEmail = (email) => {
     const users = getUsers();
