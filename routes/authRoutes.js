@@ -1,9 +1,9 @@
 const express = require('express');
-const register = require('../controllers/registerController');
-const confirmEmail = require('../controllers/confirmEmailController');
-const login = require('../controllers/loginController');
-const requestPasswordReset = require('../controllers/requestPasswordResetController');
-const resetPassword = require('../controllers/resetPasswordController');
+const register = require('../controllers/auth/registerController');
+const confirmEmail = require('../controllers/auth/confirmEmailController');
+const login = require('../controllers/auth/loginController');
+const requestPasswordReset = require('../controllers/auth/requestPasswordResetController');
+const resetPassword = require('../controllers/auth/resetPasswordController');
 
 const router = express.Router();
 

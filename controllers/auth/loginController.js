@@ -1,4 +1,4 @@
-const { getUserByUsername, generateToken } = require('../services/userService');
+const { getUserByUsername, generateToken } = require('../../services/userService');
 const fetch = require('node-fetch');
 const characterServerUrl = 'http://localhost:6000';
 

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { getUserByEmail } = require('../services/userService');
+const { getUserByEmail } = require('../../services/userService');
 const fs = require('fs');
 
 const secretFile = fs.readFileSync('secret.txt', 'utf8');

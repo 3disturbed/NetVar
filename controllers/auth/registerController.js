@@ -1,5 +1,5 @@
-const { getUserByEmail, getUserByUsername, addUser, sendConfirmationEmail } = require('../services/userService');
-const User = require('../models/userModel');
+const { getUserByEmail, getUserByUsername, addUser, sendConfirmationEmail } = require('../../services/userService');
+const User = require('../../models/userModel');
 
 const register = async (req, res) => {
     console.log('Registering user', req.body);
