@@ -19,7 +19,6 @@ document.getElementById('login').addEventListener('submit', async (e) => {
     e.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-    alert('Logging in as ' + username);
 
     // Authenticate user
     const response = await fetch(`./auth/login`, {
@@ -27,11 +26,13 @@ document.getElementById('login').addEventListener('submit', async (e) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     });
-
     console.log(response);
     const data = await response.json();
     if (response.ok) {
-        const token = data.token;
+        const token = data.token; 
+        alert('Logged in as ' + username);
+        alert('Token: ' + token);
+   
         // Connect to Relay Server for character selection
         const relayResponse = await fetch(`${AuthURI}/selectCharacter`, {
             method: 'POST',
@@ -42,6 +43,8 @@ document.getElementById('login').addEventListener('submit', async (e) => {
         const relayData = await relayResponse.json();
         if (relayResponse.ok) {
             connectToReplicationServer(relayData.replicationServerUrl, token);
+            alert(relayData.message);
+    
         }
     } else {
         alert(data.message);
