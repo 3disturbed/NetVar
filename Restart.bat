@@ -17,4 +17,5 @@ start WorldServer.bat
 start CharacterServer.bat
 
 endlocal
+exit
 

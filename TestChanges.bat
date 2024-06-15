@@ -7,4 +7,4 @@ git commit -m "Dark's Dev push."
 git push
 
 start Restart.bat
-pause
+exit
