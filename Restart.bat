@@ -17,7 +17,7 @@ if exist %CLONE_DIR% (
     git clone "%REPO_URL%" %CLONE_DIR%
 )
 echo Complete, Starting Servers...
-pause
+
 :: Start the servers
 cd NetVar
 start AuthServer.bat

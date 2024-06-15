@@ -8,3 +8,4 @@ git push
 
 cd Netvar
 start Restart.bat
+pause
