@@ -5,6 +5,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const http = require('http');
+const e = require('express');
 
 // 2. Create an Express app
 const app = express();
@@ -17,11 +18,14 @@ app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-f
 let RequestCount = 0;
 let ServerStartTime = Date.now();
 let PagesServed = 0;
+let ScriptServed = 0;
+let ImageServed = 0;
+let StyleServed = 0;
 
 // 5. Draw the UI
 function DrawUI() {
     console.clear();
-    console.log('NetVar Web Server start time:', new Date(ServerStartTime).toLocaleTimeString(), ' Requests:', RequestCount, ' Pages served:', PagesServed);
+    console.log('NetVar Web Server start time:', new Date(ServerStartTime).toLocaleTimeString(), ' Requests:', RequestCount, ' Pages: ', PagesServed, ' Scripts: ', ScriptServed, ' Images: ', ImageServed, ' Styles: ', StyleServed);
 }
 
 // 6. Serve static files from 'public' directory and increment PagesServed
@@ -29,7 +33,17 @@ app.use((req, res, next) => {
     if (req.path.startsWith('/auth')) {
         next(); // Skip this middleware for /auth route
     } else {
-        PagesServed++;
+        if (req.path.endsWith('.js')) {
+            ScriptServed++;
+        } else if (req.path.endsWith('.html') || req.path === '/'){
+            PagesServed++;
+        } else if (req.path.endsWith('.css')){
+            StyleServed++;
+        } else if (req.path.endsWith('.png')){
+            ImageServed++;
+        } else {
+            RequestCount++;
+        }
         DrawUI();
         next();
     }
