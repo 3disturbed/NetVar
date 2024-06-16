@@ -1,48 +1,52 @@
+// Purpose: Serve static files and proxy requests to AuthServer and CharacterServer
+
+// 1. Import the required modules
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const http = require('http');
 
+// 2. Create an Express app
 const app = express();
 
-// Middleware
+// 3. Middleware
 app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
-app.use(express.static(path.join(__dirname, 'public')));
 
-// Server metrics
+// 4. Server metrics
 let RequestCount = 0;
 let ServerStartTime = Date.now();
 let PagesServed = 0;
 
+// 5. Draw the UI
 function DrawUI() {
     console.clear();
-    
-    console.log('NetVar Web Server start time:', new Date(ServerStartTime).toLocaleTimeString(),' Requests:', RequestCount,' Pages served:', PagesServed);
-
+    console.log('NetVar Web Server start time:', new Date(ServerStartTime).toLocaleTimeString(), ' Requests:', RequestCount, ' Pages served:', PagesServed);
 }
 
-// Serve HTML5 game and forms
-app.get('/', (req, res) => {
-    PagesServed++;
-    DrawUI();
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// 6. Serve static files from 'public' directory and increment PagesServed
+app.use((req, res, next) => {
+    if (req.path.startsWith('/auth')) {
+        next(); // Skip this middleware for /auth route
+    } else {
+        PagesServed++;
+        DrawUI();
+        next();
+    }
 });
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Serve HTML5 game and forms
 app.get('/', (req, res) => {
-    PagesServed++;
-    DrawUI();
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Handle /auth route by proxying requests to AuthServer
-app.use('/auth/', (req, res) => {
+app.use('/auth', (req, res) => {
     RequestCount++;
     DrawUI();
 
     const { method, url, headers, body } = req;
-
     const options = {
         hostname: '127.0.0.1',
         port: 3000,
@@ -51,28 +55,25 @@ app.use('/auth/', (req, res) => {
         headers,
     };
 
-    // Create a new request to AuthServer
     const proxy = http.request(options, (proxyRes) => {
         res.writeHead(proxyRes.statusCode, proxyRes.headers);
-        proxyRes.pipe(res);
+        proxyRes.pipe(res, { end: true });
     });
 
-    // Handle errors on the proxy request
     proxy.on('error', (err) => {
         console.error('Proxy Error:', err);
         res.status(500).send('Proxy Error');
     });
 
-    // Write the body to the proxy request
-    if (body) {
+    if (body && Object.keys(body).length > 0) {
         proxy.write(JSON.stringify(body));
     }
 
-    req.pipe(proxy);
+    req.pipe(proxy, { end: true });
 });
-
 
 const PORT = 5000;
 app.listen(PORT, () => {
+   
+    DrawUI();
 });
-DrawUI();
