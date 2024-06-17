@@ -15,16 +15,7 @@ function DrawUI() {
     console.log('----------------------------------------------');
 }
 
-app.post('/login', (req, res) => {
-    
-    console.log('Logging in user', req.body);
-    // Check if user is already logged in
-    
-    onlineUsers.push(req.body);
-    res.status(200).json({ message: 'User logged in' });
-    DrawUI();
 
-});
 app.post('/findReplicationServer', (req, res) => {
     const { token, characterId } = req.body;
 

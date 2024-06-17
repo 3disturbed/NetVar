@@ -15,17 +15,17 @@ app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
 
 // 4. Server metrics
-let RequestCount = 0;
-let ServerStartTime = Date.now();
-let PagesServed = 0;
-let ScriptServed = 0;
-let ImageServed = 0;
-let StyleServed = 0;
+let requestCount = 0;
+let serverStartTime = Date.now();
+let pagesServed = 0;
+let scriptServed = 0;
+let imageServed = 0;
+let styleServed = 0;
 
 // 5. Draw the UI
-function DrawUI() {
+function drawUI() {
     console.clear();
-    console.log('NetVar Web Server start time:', new Date(ServerStartTime).toLocaleTimeString(), ' Requests:', RequestCount, ' Pages: ', PagesServed, ' Scripts: ', ScriptServed, ' Images: ', ImageServed, ' Styles: ', StyleServed);
+    console.log('NetVar Web Server start time:', new Date(serverStartTime).toLocaleTimeString(), ' Requests:', requestCount, ' Pages: ', pagesServed, ' Scripts: ', scriptServed, ' Images: ', imageServed, ' Styles: ', styleServed);
 }
 
 // 6. Serve static files from 'public' directory and increment PagesServed
@@ -34,15 +34,15 @@ app.use((req, res, next) => {
         next(); // Skip this middleware for /auth route
     } else {
         if (req.path.endsWith('.js')) {
-            ScriptServed++;
+            scriptServed++;
         } else if (req.path.endsWith('.html') || req.path === '/'){
-            PagesServed++;
+            pagesServed++;
         } else if (req.path.endsWith('.css')){
-            StyleServed++;
+            styleServed++;
         } else if (req.path.endsWith('.png')){
-            ImageServed++;
+            imageServed++;
         } else {
-            RequestCount++;
+            requestCount++;
         }
         DrawUI();
         next();
@@ -57,8 +57,8 @@ app.get('/', (req, res) => {
 
 // Handle /auth route by proxying requests to AuthServer
 app.use('/auth', (req, res) => {
-    RequestCount++;
-    DrawUI();
+    requestCount++;
+    drawUI();
 
     const { method, url, headers, body } = req;
     const options = {
@@ -89,5 +89,5 @@ app.use('/auth', (req, res) => {
 const PORT = 5000;
 app.listen(PORT, () => {
    
-    DrawUI();
+    drawUI();
 });

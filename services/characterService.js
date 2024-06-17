@@ -23,12 +23,10 @@ const updateCharacterName = (id, name) => {
     return character;
 };
 
-const saveCharactersToFile = () => {
-    console.log('Saving characters');
+const saveCharactersToFile = (characters) => {
     const userFile = fs.createWriteStream('characters.json');
     userFile.write(JSON.stringify(characters));
     userFile.end();
-    console.log('Characters saved');
 };
 
 module.exports = {

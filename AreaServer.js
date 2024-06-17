@@ -4,7 +4,7 @@ const axios = require('axios');
 const worldServerUrl = 'http://localhost:4000';
 
 const wss = new WebSocket.Server({ port: 8000 });
-var ServerStartTime = Date.now();
+var serverStartTime = Date.now();
 
 
 

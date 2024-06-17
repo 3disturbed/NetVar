@@ -5,6 +5,8 @@ const Skills = {
     MAGIC: 'Magic',
     ALCHEMY: 'Alchemy',
     HEALING: 'Healing',
+    CRAFTING: 'Crafting',
+    
 };
 
 module.exports = Skills;
